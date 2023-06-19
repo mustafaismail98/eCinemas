@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System;
+using eCinemas.Data.Enums;
 
 namespace eCinemas.Models
 {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace eCinemas.Models
 {
@@ -9,5 +10,6 @@ namespace eCinemas.Models
         public string ProfilePictureURL { get; set; }
         public string FullName { get; set; }
         public string Bio { get; set; }
+        public List<Actor_Movie> Actor_Movies { get; set; }
     }
 }
