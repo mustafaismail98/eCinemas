@@ -1,6 +1,7 @@
 ﻿using eCinemas.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace eCinemas.Controllers
@@ -16,9 +17,9 @@ namespace eCinemas.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var movies = await _context.Movies.ToListAsync();
+            var movies = await _context.Movies.Include(c => c.Cinema).OrderBy(x => x.Name).ToListAsync();
 
-            return View();
+            return View(movies);
         }
     }
 }

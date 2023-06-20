@@ -17,7 +17,7 @@ namespace eCinemas.Controllers
         public async Task<IActionResult> Index()
         {
             var cinemas = await _context.Cinemas.ToListAsync();
-            return View();
+            return View(cinemas);
         }
     }
 }
