@@ -1,4 +1,5 @@
 using eCinemas.Data;
+using eCinemas.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,9 @@ namespace eCinemas
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
+            
+            services.AddScoped<IActorsService,  ActorsService>();   
+            
             services.AddControllersWithViews();
         }
 
