@@ -70,7 +70,7 @@ namespace eCinemas.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, Actor actor)
+        public async Task<IActionResult> Edit([FromRoute] int id, Actor actor)
         {
             if (!ModelState.IsValid)
             {
