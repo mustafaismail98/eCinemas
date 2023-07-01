@@ -1,5 +1,6 @@
 ﻿using eCinemas.Data;
 using eCinemas.Data.Services;
+using eCinemas.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,5 +30,21 @@ namespace eCinemas.Controllers
             if (producerDetails == null) return View("NotFound");
             return View(producerDetails);
         }
+
+        //GET: producers/create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("ProfilePictureURL,FullName,Bio")] Producer producer)
+        {
+            if (!ModelState.IsValid) return View(producer);
+
+            await _service.AddAsync(producer);
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
