@@ -1,4 +1,5 @@
 ﻿using eCinemas.Data;
+using eCinemas.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -8,18 +9,24 @@ namespace eCinemas.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IMoviesService _service;
 
-        public MoviesController(AppDbContext appDbContext)
+        public MoviesController(IMoviesService service)
         {
-            _context = appDbContext;
+            _service = service;
 
         }
         public async Task<IActionResult> Index()
         {
-            var movies = await _context.Movies.Include(c => c.Cinema).OrderBy(x => x.Name).ToListAsync();
+            var movies = await _service.GetAllAsync(n => n.Cinema);
 
             return View(movies);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var movieDetail = await _service.GetMovieByIdAsync(id);
+            return View(movieDetail);
         }
     }
 }
