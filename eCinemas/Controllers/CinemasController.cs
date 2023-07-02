@@ -1,8 +1,6 @@
-﻿using eCinemas.Data;
-using eCinemas.Data.Services;
+﻿using eCinemas.Data.Services;
 using eCinemas.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace eCinemas.Controllers
@@ -35,6 +33,36 @@ namespace eCinemas.Controllers
             if (!ModelState.IsValid) return View(cinema);
             await _service.AddAsync(cinema);
             return RedirectToAction(nameof(Index));
+        }
+
+        //Get: Cinemas/Details/1
+        public async Task<IActionResult> Details(int id)
+        {
+            var cinemaDetails = await _service.GetByIdAsync(id);
+            if (cinemaDetails == null) return View("NotFound");
+            return View(cinemaDetails);
+        }
+
+        //Get: Cinemas/Edit/1
+        public async Task<IActionResult> Edit(int id)
+        {
+            var cinemaDetails = await _service.GetByIdAsync(id);
+            if (cinemaDetails == null) return View("NotFound");
+            return View(cinemaDetails);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromRoute] int id, [Bind("Id,Logo,Name,Description")] Cinema cinema)
+        {
+            if (!ModelState.IsValid) return View(cinema);
+
+            if (id == cinema.Id)
+            {
+                await _service.UpdateAsync(id, cinema);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(cinema);
         }
 
     }
