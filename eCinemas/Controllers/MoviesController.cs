@@ -1,9 +1,8 @@
-﻿using eCinemas.Data;
-using eCinemas.Data.Services;
+﻿using eCinemas.Data.Services;
 using eCinemas.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -110,6 +109,20 @@ namespace eCinemas.Controllers
 
             await _service.UpdateMovieAsync(movie);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Filter(string searchString)
+        {
+            var allMovies = await _service.GetAllAsync(n => n.Cinema);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var filteredResultNew = allMovies.Where(n => string.Equals(n.Name, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.Description, searchString, StringComparison.CurrentCultureIgnoreCase)).ToList();
+
+                return View("Index", filteredResultNew);
+            }
+
+            return View("Index", allMovies);
         }
     }
 }
