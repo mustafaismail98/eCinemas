@@ -1,7 +1,9 @@
 using eCinemas.Data;
+using eCinemas.Data.Cart;
 using eCinemas.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +34,10 @@ namespace eCinemas
             services.AddScoped<IProducersService, ProducersService>();   
             services.AddScoped<ICinemasService, CinemasService>();   
             services.AddScoped<IMoviesService, MoviesService>();   
-            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+
+            services.AddSession();
             services.AddControllersWithViews();
         }
 
@@ -53,6 +58,7 @@ namespace eCinemas
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
