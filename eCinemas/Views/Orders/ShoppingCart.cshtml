@@ -57,10 +57,11 @@
 
         <div class="text-right">
             <div class="btn-group">
-                <a class="btn btn-outline-primary" asp-action="CompleteOrder">
-                        Complete order
-                </a>
                 <div id="paypal-btn"></div>
+                @*<a class="btn btn-outline-primary" asp-action="CompleteOrder">
+                        Complete order
+                </a>*@
+        
                 <span style="padding:5px"></span>
                 <a class="btn btn-outline-success" asp-controller="Movies" asp-action="Index">
                     Add more items
@@ -69,3 +70,49 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script>
+
+    let _total = @Html.Raw(Model.ShoppingCartTotal);
+
+    paypal.Button.render({
+        //Configure environment 
+        env: 'sandbox',
+        client: {
+            sandbox: 'AWjA307-N5QfpKluW0S96vMcOYvXJzyWrTThFs7MtrgSsnqzZMvjMzvZ3rGCD2rW0Sy_frc47deQwOrI'
+        },
+
+        locale: 'en_US',
+        style: {
+            size: 'small',
+            color: 'blue',
+            shape: 'pill'
+        },
+        commit: true,
+
+        //Set up the paymeent
+        payment: function (data, actions) {
+            return actions.payment.create({
+                transactions: [{
+                    amount: {
+                        total: _total,
+                        currency: 'USD'
+                    }
+                }]
+            });
+        },
+        onAuthorize: function (data, actions) {
+            return actions.payment.execute().then(function () {
+                var url = '@Url.Action("CompleteOrder", "Orders", new { })';
+                window.location.href = url;
+            });
+        }
+        //Exu
+
+
+    }, '#paypal-btn');
+</script>
+}
