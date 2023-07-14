@@ -4,6 +4,7 @@ using eCinemas.Data.ViewModels;
 using eCinemas.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -90,6 +91,14 @@ namespace eCinemas.Controllers
             }
 
             return View("RegisterCompleted");
+
+        }
+
+        public async Task<IActionResult> Users()
+        {
+            var users = await _context.Users.ToListAsync();
+
+            return View(users);
 
         }
 
