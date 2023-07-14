@@ -76,10 +76,10 @@
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <script>
 
-    let _total = @Html.Raw(Model.ShoppingCartTotal);
+    let _total = '@Model.ShoppingCartTotal.ToString("F2").Replace(",",".")';
 
     paypal.Button.render({
-        //Configure environment 
+        //Configure environment
         env: 'sandbox',
         client: {
             sandbox: 'AWjA307-N5QfpKluW0S96vMcOYvXJzyWrTThFs7MtrgSsnqzZMvjMzvZ3rGCD2rW0Sy_frc47deQwOrI'

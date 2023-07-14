@@ -21,7 +21,7 @@ namespace eCinemas.Controllers
         {
             var movies = await _service.GetAllAsync(n => n.Cinema);
 
-            return View(movies);
+            return View(movies.OrderBy(c => c.Name));
         }
 
         public async Task<IActionResult> Details(int id)
@@ -41,7 +41,6 @@ namespace eCinemas.Controllers
 
             return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Create(NewMovieVM movie)

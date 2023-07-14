@@ -4,7 +4,7 @@ using eCinemas.Data.ViewModels;
 using eCinemas.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace eCinemas.Controllers
@@ -74,18 +74,30 @@ namespace eCinemas.Controllers
                 FullName = registerVM.FullName,
                 Email = registerVM.EmailAddress,
                 UserName = registerVM.EmailAddress,
-                PasswordHash = registerVM.Password
             };
 
-            var newUserResponse = await _userManager.CreateAsync(newUser, newUser.PasswordHash);
+            var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 
             if(newUserResponse.Succeeded)
             {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
             }
 
+            if(newUserResponse.Errors.Any())
+            {
+                TempData["Error"] = "Something went wrong. Please, try again!";
+                return View(registerVM);
+            }
+
             return View("RegisterCompleted");
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Movies");
         }
     }
 }
