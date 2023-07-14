@@ -1,12 +1,15 @@
 ﻿using eCinemas.Data;
 using eCinemas.Data.Services;
+using eCinemas.Data.Static;
 using eCinemas.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace eCinemas.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class ActorsController : Controller
     {
         private readonly IActorsService _service;
@@ -15,6 +18,8 @@ namespace eCinemas.Controllers
         {
             _service = service;
         }
+
+        [AllowAnonymous]
 
         public async Task<IActionResult> Index()
         {
@@ -44,6 +49,7 @@ namespace eCinemas.Controllers
 
 
 
+        [AllowAnonymous]
         //Get: Actors/Details/1
         public async Task<IActionResult> Details(int id)
         {

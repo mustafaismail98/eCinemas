@@ -1,12 +1,15 @@
 ﻿using eCinemas.Data.Cart;
 using eCinemas.Data.Services;
+using eCinemas.Data.Static;
 using eCinemas.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eCinemas.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class OrdersController : Controller
     {
         private readonly IMoviesService _moviesService;
@@ -20,6 +23,7 @@ namespace eCinemas.Controllers
             _ordersService = ordersService;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

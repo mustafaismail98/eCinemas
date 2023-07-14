@@ -1,5 +1,7 @@
 ﻿using eCinemas.Data.Services;
+using eCinemas.Data.Static;
 using eCinemas.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -8,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace eCinemas.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class MoviesController : Controller
     {
         private readonly IMoviesService _service;
@@ -17,6 +20,8 @@ namespace eCinemas.Controllers
             _service = service;
 
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var movies = await _service.GetAllAsync(n => n.Cinema);
@@ -24,6 +29,8 @@ namespace eCinemas.Controllers
             return View(movies.OrderBy(c => c.Name));
         }
 
+
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var movieDetail = await _service.GetMovieByIdAsync(id);
@@ -110,6 +117,7 @@ namespace eCinemas.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
             var allMovies = await _service.GetAllAsync(n => n.Cinema);

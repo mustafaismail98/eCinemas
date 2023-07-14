@@ -1,10 +1,13 @@
 ﻿using eCinemas.Data.Services;
+using eCinemas.Data.Static;
 using eCinemas.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace eCinemas.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class CinemasController : Controller
     {
         private readonly ICinemasService _service;
@@ -14,6 +17,8 @@ namespace eCinemas.Controllers
             _service = service;
 
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var cinemas = await _service.GetAllAsync();
@@ -36,6 +41,7 @@ namespace eCinemas.Controllers
         }
 
         //Get: Cinemas/Details/1
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var cinemaDetails = await _service.GetByIdAsync(id);
