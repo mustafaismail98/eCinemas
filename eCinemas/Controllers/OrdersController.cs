@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace eCinemas.Controllers
 {
-    [Authorize(Roles = UserRoles.Admin)]
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IMoviesService _moviesService;
